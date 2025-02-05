@@ -16,7 +16,7 @@ public class TestConfig implements CommandLineRunner{
 	//serve para popular o DB
 	
 	@Autowired
-	 private UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
