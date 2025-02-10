@@ -9,15 +9,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
 //mapeamento relacional Jpa
-public class Product implements Serializable{
+public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,18 +27,21 @@ public class Product implements Serializable{
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
-	@Transient
+
+	@ManyToMany
+	@JoinTable(name = "tb_product_category",
+	joinColumns = @JoinColumn(name = "product_id"),
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
-	/* Ao invez de List usamos o set,
-	 * para garantir que o mesmo produto
-	 * não tenha mais de 1x a mesma categoria
+	/*
+	 * Ao invez de List usamos o set, para garantir que o mesmo produto não tenha
+	 * mais de 1x a mesma categoria
 	 */
-	/* E a instanciamos com HashSet para garantir
-	 * que a categories instancie sem nada e não
-	 * valendo nula
+	/*
+	 * E a instanciamos com HashSet para garantir que a categories instancie sem
+	 * nada e não valendo nula
 	 */
-	
+
 	public Product() {
 	}
 
@@ -109,7 +114,5 @@ public class Product implements Serializable{
 		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 }
